@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tatouages Shop{% endblock %}
+
+{% block body %}
+    <h3 style="margin-left: 5rem; margin-top: 2rem;">Galerie du shop :</h3>
+    <br>
+    <a href="/admin/tattoo/all" style="margin-left: 10rem;">
+        <button type="button" class="btn btn-outline-light">Tous les tatouages</button>
+    </a>
+
+    {% set path = "uploads/gallery/" %}
+
+    {% for tattoo in list %}
+
+        {% set img = tattoo.url %}
+        {% set concatenedPath = path ~ img %}
+
+        {% if tattoo.flash == false %}
+            <div class="card text-white bg-dark mb-3" style="max-width: 100rem; margin-left: 10rem; margin-top: 2rem;">
+                <div class="card-header"> {{ tattoo.id }} </div>
+                <div class="card-body">
+                    <img src= {{ asset(concatenedPath)}}  alt="marche pas" width="10%" style="margin-bottom: 1rem;">
+                    <br>
+                    <a href="{{ path('app_admin_tattoo_shop_delete', {'id': tattoo.id})}}">
+                        <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
+
+

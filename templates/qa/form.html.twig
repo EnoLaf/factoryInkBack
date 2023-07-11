@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact form{% endblock %}
+
+{% block body %}
+    <div>
+        {{ form_start(form) }}
+            {{ form_rest(form) }} 
+        {{ form_end(form) }}
+    </div>
+
+    <a href="/admin/qa/all">
+        <button type="button" class="btn btn-link">Retour</button>
+    </a>
+
+{% endblock %}

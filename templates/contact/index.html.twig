@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <h3 style="margin-left: 5rem; margin-top: 2rem;">Demandes de contact :</h3>
+
+    {% set heading = "heading" %}
+    {% set collapse = "collapse" %}
+    {% set path = "uploads/contact/" %}
+        
+    {% for contact in list %}
+
+        {% set id = contact.id %}
+        {% set img = contact.file %}
+        {% set concatenedHeading = heading ~ id %}
+        {% set concatenedCollapse = collapse ~ id %}
+        {% set concatenedPath = path ~ img %}
+        
+
+        <div class="accordion" id="accordionExample" style="max-width: 100rem; margin-left: 10rem; margin-top: 2rem;">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="{{concatenedHeading}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{concatenedCollapse}}" aria-expanded="false" aria-controls="{{concatenedCollapse}}">
+                        {{ contact.name }} - {{ contact.date | date('Y-m-d') }} 
+                    </button>
+                </h2>
+                <div id="{{concatenedCollapse}}" class="accordion-collapse collapse show" aria-labelledby="{{concatenedHeading}}" data-bs-parent="#accordionExample" style="">
+                    <div class="accordion-body">
+                        <p> Email :  {{ contact.email }} <br> Message : {{ contact.content }} </p>
+                        {% if contact.file != null %}
+                            <img src= {{ asset(concatenedPath)}}  alt="" width="10%">
+                        {% endif %}
+                        <a href="{{ path('app_admin_contact_delete', {'id': contact.id})}}">
+                            <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                        </a>            
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    
+
+{% endblock %}
+
+
+

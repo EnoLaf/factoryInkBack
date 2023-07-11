@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+{% if app.user.userIdentifier is defined %}
+    <h1> Pour le moment c'est vide </h1>
+{% endif %}
+
+{% endblock %}

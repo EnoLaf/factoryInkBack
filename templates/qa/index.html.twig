@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block body %}
+    <h3 style="margin-left: 5rem; margin-top: 2rem;">Toutes les questions :</h3>
+    <br>
+    <a href="/admin/qa/create" style="margin-left: 10rem;">
+        <button type="button" class="btn btn-outline-light">Ajouter une question</button>
+    </a>
+        
+    {% for qa in list %}
+        <div class="card text-white bg-dark mb-3" style="max-width: 100rem; margin-left: 10rem; margin-top: 2rem;">
+            <div class="card-header"> {{ qa.question }} </div>
+            <div class="card-body">
+                <p class="card-text"> {{ qa.answer }} </p>
+                <a href="{{ path('app_admin_qa_update', {'id': qa.id})}}">
+                    <button type="button" class="btn btn-outline-info">Modifier</button>
+                </a>
+                <a href="{{ path('app_admin_qa_delete', {'id': qa.id})}}">
+                    <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+
+

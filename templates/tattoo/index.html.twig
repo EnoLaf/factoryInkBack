@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tatouages{% endblock %}
+
+{% block body %}
+    <h3 style="margin-left: 5rem; margin-top: 2rem;">Tous les tatouages :</h3>
+    <br>
+    <a href="/admin/tattoo/create" style="margin-left: 10rem;">
+        <button type="button" class="btn btn-outline-light">Ajouter un tatouage</button>
+    </a>
+
+    {% set path = "uploads/gallery/" %}
+
+    <ul class="nav nav-tabs" role="tablist" style="margin-top: 2rem;">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" data-bs-toggle="tab" href="#all" aria-selected="true" role="tab">Tous</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" data-bs-toggle="tab" href="#shop" aria-selected="false" tabindex="-1" role="tab">Shop</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#flash" aria-selected="false" tabindex="-1" role="tab">Flash</a>
+          </li>
+      </ul>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade show active" id="all" role="tabpanel">
+
+            <div class="container">
+                <div class="row">
+        
+                    {% for key, tattoo in list %}
+        
+                        {% set img = tattoo.url %}
+                        {% set concatenedPath = path ~ img %}
+        
+                        {% if key is divisible by(3) and key != 0 %}
+                            </div><div class="row">
+                        {% endif %}
+                        
+                        <div class="col">
+    
+                            <div class="card text-white bg-dark mb-3" style="margin-top: 2rem;">
+                                <div class="card-header"> {{ tattoo.id }} </div>
+                                <div class="card-body">
+                                        <img src= {{ asset(concatenedPath)}}  alt="" width="30%" style="margin-bottom: 1rem;">
+                                        {% if tattoo.artist %}
+                                            <p class="card-text">Artiste : {{ tattoo.artist.name }} </p>
+                                        {% endif %}
+                                        {% if tattoo.flash == true %}
+                                            <p class="card-text"> Prix : {{ tattoo.price }} €</p>
+                                            <a href="{{ path('app_admin_tattoo_update', {'id': tattoo.id})}}">
+                                                <button type="button" class="btn btn-outline-info">Modifier</button>
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ path('app_admin_tattoo_delete', {'id': tattoo.id})}}">
+                                            <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                                        </a>
+                                </div>
+                            </div>
+    
+                        </div>
+        
+                    {% endfor %}
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="tab-pane fade" id="shop" role="tabpanel">
+            
+            <div class="container">
+                <div class="row">
+        
+                    {% for key, tattoo in listShop %}
+        
+                        {% set img = tattoo.url %}
+                        {% set concatenedPath = path ~ img %}
+        
+                        {% if key is divisible by(3) and key != 0 %}
+                            </div><div class="row">
+                        {% endif %}
+                        
+                        <div class="col">
+    
+                            <div class="card text-white bg-dark mb-3" style="margin-top: 2rem;">
+                                <div class="card-header"> {{ tattoo.id }} </div>
+                                <div class="card-body">
+                                        <img src= {{ asset(concatenedPath)}}  alt="" width="30%" style="margin-bottom: 1rem;">
+                                        {% if tattoo.artist %}
+                                            <p class="card-text">Artiste : {{ tattoo.artist.name }} </p>
+                                        {% endif %}
+                                        <a href="{{ path('app_admin_tattoo_delete', {'id': tattoo.id})}}">
+                                            <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                                        </a>
+                                </div>
+                            </div>
+    
+                        </div>
+        
+                    {% endfor %}
+        
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="flash" role="tabpanel">
+
+            <div class="container">
+                <div class="row">
+        
+                    {% for key, tattoo in listFlash %}
+        
+                        {% set img = tattoo.url %}
+                        {% set concatenedPath = path ~ img %}
+        
+                        {% if key is divisible by(3) and key != 0 %}
+                            </div><div class="row">
+                        {% endif %}
+                        
+                        <div class="col">
+    
+                            <div class="card text-white bg-dark mb-3" style="margin-top: 2rem;">
+                                <div class="card-header"> {{ tattoo.id }} </div>
+                                <div class="card-body">
+                                        <img src= {{ asset(concatenedPath)}}  alt="" width="30%" style="margin-bottom: 1rem;">
+                                        <p class="card-text"> {{ tattoo.price }} €</p>
+                                        <a href="{{ path('app_admin_tattoo_update', {'id': tattoo.id})}}">
+                                            <button type="button" class="btn btn-outline-info">Modifier</button>
+                                        </a>
+                                        <a href="{{ path('app_admin_tattoo_delete', {'id': tattoo.id})}}">
+                                            <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                                        </a>
+                                </div>
+                            </div>
+    
+                        </div>
+        
+                    {% endfor %}
+        
+                </div>
+            </div>
+
+        </div>
+
+      </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+

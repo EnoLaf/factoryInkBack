@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tatouages Flash{% endblock %}
+
+{% block body %}
+    <h3 style="margin-left: 5rem; margin-top: 2rem;">Tous les flashs :</h3>
+    <br>
+    <a href="/admin/tattoo/all" style="margin-left: 10rem;">
+        <button type="button" class="btn btn-outline-light">Tous les tatouages</button>
+    </a>
+    {% set path = "uploads/gallery/" %}
+
+    <div class="container">
+        <div class="row">
+
+            {% for key, tattoo in list %}
+
+                {% set img = tattoo.url %}
+                {% set concatenedPath = path ~ img %}
+
+                {% if tattoo.flash == true %}
+
+                    {% if key is divisible by(3) and key != 0 %}
+                        </div><div class="row">
+                    {% endif %}
+                    
+                    <div class="col">
+
+                        <div class="card text-white bg-dark mb-3" style="margin-top: 2rem;">
+                            <div class="card-header"> {{ tattoo.id }} </div>
+                            <div class="card-body">
+                                    <img src= {{ asset(concatenedPath)}}  alt="" width="30%" style="margin-bottom: 1rem;">
+                                    <p class="card-text"> {{ tattoo.price }} €</p>
+                                    <a href="{{ path('app_admin_tattoo_update', {'id': tattoo.id})}}">
+                                        <button type="button" class="btn btn-outline-info">Modifier</button>
+                                    </a>
+                                    <a href="{{ path('app_admin_tattoo_flash_delete', {'id': tattoo.id})}}">
+                                        <button type="button" class="btn btn-outline-danger">Supprimer</button>
+                                    </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    
+
+
+{% endblock %}
+
+
+
+
+
+
+

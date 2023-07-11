@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('asset/style/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/style/main.css') }}">
+{% endblock %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<h1> Inscription </h1>
+<div>
+    {{ form_start(form) }}
+        {{ form_rest(form) }} 
+    {{ form_end(form) }}
+</div>
+
+{% if msg is defined %}
+    <p>{{ msg }}</p>
+{% endif %}
+
+{% endblock %}
