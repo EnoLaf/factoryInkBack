@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Utils;
+use App\Service\Messagerie;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -26,7 +27,7 @@ class UserController extends AbstractController
 
     #[Route('/admin/register', name: 'app_admin_register')]
     public function userAdd(EntityManagerInterface $em, UserRepository $repo,
-    Request $request, UserPasswordHasherInterface $hash):Response
+    Request $request, UserPasswordHasherInterface $hash, Messagerie $messagerie):Response
     {   
         $msg = "";
         //Instancier un objet User
@@ -50,6 +51,8 @@ class UserController extends AbstractController
             $user->setLastName($lastName);
             $user->setFirstName($firstName);
             $user->setEmail($email);
+            $user->setRoles(["ROLE_ADMIN"]);
+            $user->setAdmin(false);
 
             //récupération d'un compte utilisateur
             $recup = $repo->findOneBy(['email'=>$user->getEmail()]);
@@ -64,7 +67,24 @@ class UserController extends AbstractController
                 $em->flush();
             }
 
-            $msg = "Le compte : ".$user->getEmail()." a été ajouté en BDD";
+            //récupération des ID de messagerie
+            $login=$this->getParameter('login');
+            $mdp=$this->getParameter('mdp');
+
+            //variable pour le mail
+            $objet = 'Activation d\'un compte admin';
+            $content = '<p>L\'utilisateur : '.mb_convert_encoding($user->getLastName(), 'ISO-8859-1', 'UTF-8').' '
+            .mb_convert_encoding($user->getFirstName(), 'ISO-8859-1', 'UTF-8').' souhaite créer un compte administrateur.'.
+            'Pour activer le compte admin veuillez cliquer sur l\'url ci-dessous:</p>'.
+            '<a href="https://127.0.0.1:8000/admin/activate/'.$user->getId().'">Accepter</a>'.
+            '<a href="https://127.0.0.1:8000/register/delete/'.$user->getId().'">Refuser</a>';
+
+            $destinataire = 'enora.lafforgue@gmail.com';
+
+            //on stocke la fonction dans une variable
+            $statut = $messagerie->sendEmail($login, $mdp, $destinataire, $objet, $content);
+
+            $msg = "Un mail a été envoyé à un admin pour accepter votre demande.";
         }
         return $this->render('user/register.html.twig', [
             'msg'=> $msg,
@@ -72,5 +92,37 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/activate/{id}', name: 'app_admin_activate')]
+    public function userActivate(EntityManagerInterface $em, UserRepository $userRepository, int $id):Response{  
+        //récupérer user par son id 
+        $user = $userRepository->find($id);
+
+        //passer actiavate à 1
+        $user->setAdmin(true);
+        
+        if($user){
+            //persister les données
+            $em->persist($user);
+            //ajoute en BDD
+            $em->flush();
+            //rediriger ver la connexion
+            return $this->redirectToRoute('app_admin_login');
+        }else{  //sinon le compte n'existe pas
+            //rediriger ver la connexion
+            return $this->redirectToRoute('app_admin_register');
+        }
+
+        return $this->render('user/index2.html.twig', [
+        ]);
+    }
+
+    #[Route('/admin/user/delete/{id}', name:'app_admin_user_delete')]
+    public function userDelete (int $id, UserRepository $repo,
+    EntityManagerInterface $em){
+        $user = $repo->find($id);
+        $em->remove($user);
+        $em->flush();
+        return $this->redirectToRoute('app_admin_home');
+    }
     
 }

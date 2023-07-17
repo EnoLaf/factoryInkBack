@@ -27,7 +27,7 @@
                 </h2>
                 <div id="{{concatenedCollapse}}" class="accordion-collapse collapse show" aria-labelledby="{{concatenedHeading}}" data-bs-parent="#accordionExample" style="">
                     <div class="accordion-body">
-                        <p> Email :  {{ contact.email }} <br> Message : {{ contact.content }} </p>
+                        <p> Email :  {{ contact.email }} <br> Téléphone : {{ contact.phone }} <br> Message : {{ contact.content }} </p>
                         {% if contact.file != null %}
                             <img src= {{ asset(concatenedPath)}}  alt="" width="10%">
                         {% endif %}

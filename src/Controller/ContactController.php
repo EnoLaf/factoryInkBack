@@ -88,7 +88,9 @@ class ContactController extends AbstractController
             $objet = 'Nouvelle demande de contact';
             $content = '<p>Nom : '.mb_convert_encoding($contact->getName(), 'ISO-8859-1', 'UTF-8').'</br>'.
             'Mail : '.$contact->getEmail().'</br>'.
-            'Message : '.mb_convert_encoding($contact->getContent(), 'ISO-8859-1', 'UTF-8').'</p>';
+            mb_convert_encoding('Téléphone : ', 'ISO-8859-1', 'UTF-8').$contact->getPhone().'</br>'.
+            'Message : '.mb_convert_encoding($contact->getContent(), 'ISO-8859-1', 'UTF-8').'<br> </p>'.
+            '<a href="https://127.0.0.1:8000/admin/contact/all">Voir demande</a>';
             $destinataire = 'enora.lafforgue@gmail.com';
             
             // on stocke la fonction dans une variable
