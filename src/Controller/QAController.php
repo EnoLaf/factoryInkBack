@@ -11,6 +11,8 @@ use App\Repository\QARepository;
 use App\Form\QAType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Utils;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class QAController extends AbstractController
 {
@@ -23,7 +25,7 @@ class QAController extends AbstractController
     }
 
     #[Route('/admin/qa/create', name: 'app_admin_qa_create')]
-    public function qaCreate(EntityManagerInterface $em, Request $request):Response
+    public function createQA(EntityManagerInterface $em, Request $request):Response
     {   
         $msg = "";
         //Instancier un objet contact
@@ -55,7 +57,7 @@ class QAController extends AbstractController
     }
 
     #[Route('/admin/qa/all', name:'app_admin_qa_all')]
-    public function showAllArticle(QARepository $qaRepository):Response{
+    public function showAllQA(QARepository $qaRepository):Response{
         //récuperer dans un tableau tous les articles
         $qa = $qaRepository->findAll();
         return $this->render('qa/index.html.twig', [
@@ -63,8 +65,13 @@ class QAController extends AbstractController
         ]);
     }
 
+    #[Route('/api/qa/all', name:'app_admin_qa_all', methods:'GET')]
+    public function showAllQAApi(QARepository $qaRepository):Response{
+        return $this->json($qaRepository->findAll(),200, [], ['groups' => 'qa:readAll']);
+    }
+
     #[Route('/admin/qa/update/{id}', name:'app_admin_qa_update')]
-    public function updateCategorie(int $id, QARepository $repo,
+    public function updateQA(int $id, QARepository $repo,
     EntityManagerInterface $em, Request $request,){
         $msg = "";
         //Récupérer la catégorie
@@ -88,7 +95,7 @@ class QAController extends AbstractController
     }
 
     #[Route('/admin/qa/delete/{id}', name:'app_admin_qa_delete')]
-    public function deleteCategorie(int $id, QARepository $repo,
+    public function deleteQA(int $id, QARepository $repo,
     EntityManagerInterface $em){
         $qa = $repo->find($id);
         $em->remove($qa);

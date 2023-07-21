@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\QARepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QARepository::class)]
 class QA
@@ -12,12 +13,15 @@ class QA
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('qa:readAll')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('qa:readAll')]
     private ?string $question = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups('qa:readAll')]
     private ?string $answer = null;
 
     public function getId(): ?int
