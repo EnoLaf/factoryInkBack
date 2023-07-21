@@ -84,12 +84,17 @@ class ArtistController extends AbstractController
     } */
 
     #[Route('/admin/artist/all', name:'app_admin_artist_all')]
-    public function showAllArticle(ArtistRepository $artistRepository):Response{
+    public function showAllArtists(ArtistRepository $artistRepository):Response{
         //récuperer dans un tableau tous les articles
         $artists = $artistRepository->findAll();
         return $this->render('artist/index.html.twig', [
             'list'=> $artists,
         ]);
+    }
+
+    #[Route('/api/artists/all', name:'app_admin_artists_all', methods:'GET')]
+    public function showAllArtistsApi(ArtistRepository $artistRepository):Response{
+        return $this->json($artistRepository->findAll(),200, [], ['groups' => 'artists:readAll']);
     }
 
     #[Route('/admin/artist/update/{id}', name:'app_admin_artist_update')]
