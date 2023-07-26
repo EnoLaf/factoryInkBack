@@ -38,6 +38,10 @@ class Artist
     #[Groups('artists:readAll')]
     private Collection $gallery;
 
+    #[ORM\Column(length: 255)]
+    #[Groups('artists:readAll')]
+    private ?string $link = null;
+
     public function __construct()
     {
         $this->gallery = new ArrayCollection();
@@ -122,6 +126,18 @@ class Artist
                 $gallery->setArtist(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(string $link): static
+    {
+        $this->link = $link;
 
         return $this;
     }

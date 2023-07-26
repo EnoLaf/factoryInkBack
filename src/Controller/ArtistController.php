@@ -24,7 +24,7 @@ class ArtistController extends AbstractController
         ]);
     }
 
-    /* #[Route('/admin/artist/create', name: 'app_admin_artist_create')]
+    #[Route('/admin/artist/create', name: 'app_admin_artist_create')]
     public function artistCreate(EntityManagerInterface $em, Request $request, 
     SluggerInterface $slugger):Response
     {   
@@ -45,6 +45,7 @@ class ArtistController extends AbstractController
             $artist->setName($name);
             $artist->setStyle($style);
             $artist->setResume($resume);
+            $artist->setLink('/artists-'.$artist->getName());
 
             $file = $form->get('profilePicture')->getData();
             // this condition is needed because the 'brochure' field is not required
@@ -81,7 +82,7 @@ class ArtistController extends AbstractController
             'msg'=> $msg,
             'form'=> $form->createView(),
         ]);
-    } */
+    }
 
     #[Route('/admin/artist/all', name:'app_admin_artist_all')]
     public function showAllArtists(ArtistRepository $artistRepository):Response{
