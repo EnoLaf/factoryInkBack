@@ -45,7 +45,7 @@ class ArtistController extends AbstractController
             $artist->setName($name);
             $artist->setStyle($style);
             $artist->setResume($resume);
-            $artist->setLink('/artists-'.$artist->getName());
+            $artist->setLink('/artistes-'.$artist->getName());
 
             $file = $form->get('profilePicture')->getData();
             // this condition is needed because the 'brochure' field is not required
@@ -93,9 +93,13 @@ class ArtistController extends AbstractController
         ]);
     }
 
-    #[Route('/api/artists/all', name:'app_admin_artists_all', methods:'GET')]
+    #[Route('/api/artists/all', name:'app_api_artists_all', methods:'GET')]
     public function showAllArtistsApi(ArtistRepository $artistRepository):Response{
         return $this->json($artistRepository->findAll(),200, [], ['groups' => 'artists:readAll']);
+    }
+    #[Route('/api/artists/{id}', name:'app_api_artists_id', methods:'GET')]
+    public function showOneArtistsApi(ArtistRepository $artistRepository, int $id):Response{
+        return $this->json($artistRepository->find($id),200, [], ['groups' => 'artists:readAll']);
     }
 
     #[Route('/admin/artist/update/{id}', name:'app_admin_artist_update')]
